@@ -15,6 +15,7 @@ const SectionRouter = () => {
             <Route exact path='/download' element={<RedirectPage href={"https://chrome.google.com/webstore/detail/chromegWle-omegle-ip-puller/gcbbaikjfjmidabapdnebofcmconhdbn"} />} />
             <Route exact path='/developer' element={<RedirectPage href={"https://isaackogan.com"} />} />
             <Route exact path='/discord' element={<RedirectPage href={"https://isaackogan.com"} />} />
+            <Route exact path='/github' element={<RedirectPage href={"https://github.com/ChromegleApp/Chromegle"} />} />
             <Route exact path='/omegle' element={<RedirectPage time={3000} href={"https://omegle.com"} />} />
         </Routes>
     )
