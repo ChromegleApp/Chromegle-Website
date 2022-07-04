@@ -77,7 +77,7 @@ class UserCount extends Component {
     }
 
     componentDidMount() {
-        fetch("https://chromegle.isaackogan.com/chromegle/chrome-store/stats")
+        fetch("https://api.chromegle.net/chromegle/chrome/stats")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -85,12 +85,17 @@ class UserCount extends Component {
                         payload: result
                     });
                 },
-                (error) => {
+                () => {
                     this.setState({
                         payload: {}
                     });
                 }
             )
+            .catch(() => {
+                this.setState({
+                    payload: {}
+                })
+            })
     }
 
     render() {
