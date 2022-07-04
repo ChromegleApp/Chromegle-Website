@@ -104,6 +104,9 @@ class UserCount extends Component {
 
         if (payload != null) {
             users = payload["payload"]["users"]["value"];
+            if (users == null) {
+                users = "a few"
+            }
         } else {
             return <div />
         }
