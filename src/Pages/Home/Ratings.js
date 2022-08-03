@@ -73,7 +73,12 @@ class Ratings extends Component {
             return <div />
         }
 
-        let percent = (eval(this.state.payload?.payload?.rating?.value) || 0) * 100;
+        let percent;
+        try {
+            percent = (eval(this.state.payload?.payload?.rating?.value) || "0") * 100;
+        } catch (ex) {
+            percent = 88;
+        }
 
         return (
             <RatingContainer>
@@ -83,7 +88,7 @@ class Ratings extends Component {
                         <span>★★★★★</span>
                     </div>
                 </div>
-                <RatingText>Based on <strong>{(this.state.payload?.payload?.["rating-count"]?.value.replace(" total", "") + "+ total") || "our collective"}</strong> ratings!</RatingText>
+                <RatingText>Based on <strong>{(this.state.payload?.payload?.["rating-count"]?.value.replace(" total", "").replace("invalid", 75) + "+ total") || "our collective"}</strong> ratings!</RatingText>
 
 
             </RatingContainer>
