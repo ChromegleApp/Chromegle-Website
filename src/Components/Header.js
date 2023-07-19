@@ -50,11 +50,17 @@ const DevCreditButton = styled.a`
   text-decoration: none;
   color: #e3e2e2;
   margin-right: 25px;
+  cursor: pointer;
+
   &:hover {
     transition-duration: 200ms;
     opacity: 0.8;
   }
-  cursor: pointer;
+
+  @media (max-width: 750px) {
+    margin-right: 35px;
+  }
+
 `;
 
 const ButtonContainer = styled.div`

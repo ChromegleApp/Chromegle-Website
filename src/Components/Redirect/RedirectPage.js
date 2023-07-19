@@ -25,6 +25,7 @@ const RedirectContainer = styled.div`
   height: 500px;
 `;
 
+// noinspection CssOverwrittenProperties
 const LoadRing = styled.a`
   display: inline-block;
   margin: auto;
@@ -89,11 +90,7 @@ const TextLink = styled.a`
 
 class RedirectPage extends Component {
 
-    defaultMS = 6000;
-
-    constructor(props) {
-        super(props);
-    }
+    defaultMS = 5000;
 
     render() {
 

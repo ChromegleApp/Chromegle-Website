@@ -17,14 +17,18 @@ const Body = styled.div`
   display: flex;
   margin-top: 120px;
   width: 100%;
+  
+  @media (max-height: 1080px) {
+    margin-top: 80px;
+  }
 
   @media (max-width: 1020px) {
     flex-direction: column;
-    margin-top: 50px;
+    margin-top: 60px;
   }
 
-  @media (max-width: 400px) {
-    margin-top: 30px;
+  @media (max-width: 560px) {
+    margin-top: 10px;
   }
 
 `;
@@ -155,7 +159,7 @@ class UserCount extends Component {
 
     componentDidMount() {
 
-        fetch("https://api.chromegle.net/chromegle/chrome/stats")
+        fetch("https://img.shields.io/chrome-web-store/users/gcbbaikjfjmidabapdnebofcmconhdbn.json")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -183,10 +187,10 @@ class UserCount extends Component {
             return <OnlineUsers style={{opacity: 0}}>J</OnlineUsers>
         }
 
-        let users = payload == null ? "a few" : payload["payload"]["users"]["value"].replace("k", "")
+        let users = payload == null ? "a few" : payload["value"].replace("k", "+")
 
         return (
-            <OnlineUsers>Join more than <strong>{users} thousand</strong> members</OnlineUsers>
+            <OnlineUsers>Join more than <strong>{users} thousand</strong> members!</OnlineUsers>
         )
     }
 
@@ -212,9 +216,9 @@ const HeroImg = styled.img`
   }
 
   @media (max-width: 560px) {
-    height: 200px;
+    height: 250px;
     margin-top: 50px;
-    margin-bottom: -35px;
+    margin-bottom: -25px;
   }
 
 `;

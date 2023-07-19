@@ -8,19 +8,22 @@ const RatingContainer = styled.div`
   max-width: 1400px;
   flex-direction: column;
   align-items: center;
-  margin-top: -30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   animation: fadein 2500ms;
   flex-grow: 1;
-  
+
   @media (max-width: 1020px) {
-    margin-top: 20px;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    margin-bottom: 70px;
+    flex-grow: 0;
+  }
+
+  @media (max-width: 560px) {
+    margin-top: 55px;
+    margin-bottom: 55px;
   }
   
-  @media (max-width: 560px) {
-    margin-top: 70px;
-    flex-grow: inherit;
-  }
 `;
 
 const RatingText = styled.span`
@@ -38,12 +41,28 @@ const RatingText = styled.span`
   }
 
   @media (max-width: 560px) {
-    font-size: 20px;
+    font-size: 15px;
   }
   
 `;
 
+const StarContainer = styled.div`
+  display: flex;
+`;
 
+
+const StarSpan = styled.span`
+  font-size: 70px;
+
+  @media (max-height: 1080px) {
+    font-size: 45px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 40px;
+  }
+  
+`;
 
 class Ratings extends Component {
 
@@ -51,46 +70,99 @@ class Ratings extends Component {
         super(props);
 
         this.state = {
-            payload: {}
+            rating: null,
+            ratingCount: null
         }
+    }
+
+    async componentDidMount() {
+
+        let ratingResponse = await fetch(
+            "https://img.shields.io/chrome-web-store/rating/gcbbaikjfjmidabapdnebofcmconhdbn.json"
+        );
+
+        let ratingCountResponse = await fetch(
+            "https://img.shields.io/chrome-web-store/rating-count/gcbbaikjfjmidabapdnebofcmconhdbn.json"
+        );
+
+        this.setState({
+            rating: this.extractRating((await ratingResponse.json()).value),
+            ratingCount: this.extractRatingCount((await ratingCountResponse.json()).value)
+        });
 
     }
 
-    componentDidMount() {
+    extractRatingCount(textRatingCount) {
+        return textRatingCount.replaceAll(/[^0-9,.]/g, "");
+    }
 
-        fetch("https://api.chromegle.net/chromegle/chrome/stats")
-            .then(res => res.json())
-            .then((result) => {
-                this.setState({
-                    payload: result
-                });
-            });
+    extractRating(textRating) {
+        try {
+            let split = textRating.split("/");
+            return split[0] / split[1];
+        } catch (ex) {
+
+        }
+
+        return null;
+
+    }
+
+    createStar(percent, key) {
+        return (
+            <div key={`star-chunk-${key}`} className={"star"}>
+                <div className={"rating"} style={{width: percent + "%"}}>
+                    <StarSpan>★</StarSpan>
+                </div>
+            </div>
+        )
+    }
+
+    chunkPercents(chunks, percent) {
+
+        percent = Math.max(0, Math.min(100, Math.abs(percent)));
+        let chunkArray = [], chunkSize = 100 / chunks;
+
+        for (let i=0; i < chunks; i++) {
+            let r = (percent - (chunkSize * (i + 1)));
+            let r2 = r + chunkSize;
+
+            if (r >= 0) {
+                chunkArray[i] = 100;
+            } else {
+                chunkArray[i] = r2 > 0 ? (r2 / chunkSize) * 100 : 0;
+            }
+        }
+
+        return chunkArray;
+
+    }
+
+    createStars(chunks) {
+        let stars = [];
+
+        for (let i=0; i < chunks.length; i++) {
+            stars.push(
+                this.createStar(chunks[i], i)
+            )
+        }
+
+        return stars;
+
     }
 
     render() {
 
-        if (!this.state.payload.payload) {
+        if (!this.state.rating) {
             return <div />
         }
 
-        let percent;
-        try {
-            percent = (eval(this.state.payload?.payload?.rating?.value) || "0") * 100;
-        } catch (ex) {
-            percent = 88;
-        }
+        let percent = this.state.rating * 100;
 
         return (
             <RatingContainer>
-
-                <div className="star" style={{"marginTop": "-10px"}}>
-                    <div className="rating" style={{width: percent + "%"}}>
-                        <span>★★★★★</span>
-                    </div>
-                </div>
-                <RatingText>Based on <strong>{(this.state.payload?.payload?.["rating-count"]?.value.replace(" total", "").replace("invalid", 75) + "+ total") || "our collective"}</strong> ratings!</RatingText>
-
-
+                <RatingText>Based on {this.state.ratingCount} Chrome Web-Store ratings!</RatingText>
+                <StarContainer>{this.createStars(this.chunkPercents(5, percent))}</StarContainer>
             </RatingContainer>
         )
     }

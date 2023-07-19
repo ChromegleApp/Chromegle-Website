@@ -36,27 +36,24 @@ code {
   }
 }
 
-.star{
-  width:210px;
+.star {
   position: relative;
   color: #bdbdbd;
 }
 
 .rating {
-  width:40%;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.rating span{
-  font-size:50px;
+.rating span {
   white-space: nowrap;
   overflow: hidden;
   color: #2c8ed9;
 }
 
 .rating span:before {
-  content:"★★★★★";
+  content:"★";
   position: absolute;
   color: #a3a3a3;
   z-index: -1;
