@@ -16,6 +16,7 @@ const BannerImage = styled.img`
 `;
 
 const BannerContainer = styled.div`
+    margin-bottom: 30px;
 `;
 
 

@@ -10,7 +10,7 @@ const RatingContainer = styled.div`
   align-items: center;
   margin-top: 30px;
   margin-bottom: 30px;
-  animation: fadein 2500ms;
+  animation: fadein 1500ms;
   flex-grow: 1;
 
   @media (max-width: 1020px) {
